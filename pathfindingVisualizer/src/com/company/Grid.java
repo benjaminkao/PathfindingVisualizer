@@ -1,28 +1,35 @@
 package com.company;
 
-import java.awt.*;
+import java.io.IOException;
 import javax.swing.*;
 
 
 public class Grid extends JFrame{
 
 
-    public Grid() {
+    public Grid() throws IOException {
+//        setContentPane(new OldDijkstraPanel());
+
         DijkstraPanel dijkstraPanel = new DijkstraPanel();
-
-        add(dijkstraPanel);
-
-        setResizable(false);
+        setContentPane(new DijkstraPanel().panel1);
+        setResizable(true);
         setTitle("Dijkstra's Algorithm");
 //        setLayout(new FlowLayout(FlowLayout.CENTER, 0, DijkstraPanel.HEIGHT / 2 - 100));
+//        setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(DijkstraPanel.WIDTH, DijkstraPanel.HEIGHT);
+        setSize(OldDijkstraPanel.WIDTH, OldDijkstraPanel.HEIGHT);
         setLocationRelativeTo(null);
+        pack();
     }
 
 
     public static void main(String[] args) {
-        Grid grid = new Grid();
+        Grid grid = null;
+        try {
+            grid = new Grid();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         grid.setVisible(true);
     }

@@ -4,100 +4,127 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class Node extends JButton {
-    public int row;
-    public int col;
 
-    private int distanceFromStart;
-    private boolean visited;
+public class Node {
+    private int distanceFromStart = Integer.MAX_VALUE;
+    private Node previousNode = null;
+
+    private boolean start = false;
+    private boolean end = false;
     private boolean wall = false;
     private boolean weighted = false;
-    private Node previousNode;
 
-    private boolean start;
-    private boolean end;
+    private int row;
+    private int col;
+    private boolean visited = false;
+    private boolean neighbor = false;
 
+    private boolean shortest = false;
 
     public Node(int row, int col) {
-        setBackground(Color.WHITE);
-//        addMouseListener(mouseListener);
         this.row = row;
         this.col = col;
-        distanceFromStart = Integer.MAX_VALUE;
-        visited = false;
     }
 
+    public Node(int keyNum, int row, int col) {
+        switch(keyNum) {
+            case 1:
+                this.setStart(true);
+                break;
+            case -1:
+                this.setEnd(true);
+                break;
+            case 2:
+                this.setWall(true);
+                break;
+            case 3:
+                this.setWeighted(true);
+                break;
+            default:
+                System.out.println("Invalid keyNum");
+        }
 
-    public int getDistanceFromStart() {
-        return distanceFromStart;
+        this.row = row;
+        this.col = col;
     }
 
-    public void setDistanceFromStart(int distanceFromStart) {
-        this.distanceFromStart = distanceFromStart;
+    public boolean isShortest() {
+        return this.shortest;
+    }
+
+    public void setShortest(boolean shortest) {
+        this.shortest = shortest;
+    }
+
+    public boolean isNeighbor() {
+        return this.neighbor;
+    }
+
+    public void setNeighbor(boolean neighbor) {
+        this.neighbor = neighbor;
     }
 
     public boolean isVisited() {
-        return visited;
+        return this.visited;
     }
 
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
 
-    public boolean isWall() {
-        return wall;
+    public int getRow() {
+        return this.row;
     }
 
-    public void setWall(boolean wall) {
-        this.wall = wall;
+    public int getCol() {
+        return this.col;
     }
 
-    public Node getPreviousNode() {
-        return previousNode;
+    public void setDistanceFromStart(int distanceFromStart) {
+        this.distanceFromStart = distanceFromStart;
+    }
+
+    public int getDistanceFromStart() {
+        return distanceFromStart;
     }
 
     public void setPreviousNode(Node previousNode) {
         this.previousNode = previousNode;
     }
 
-    public boolean isStart() {
-        return start;
+    public Node getPreviousNode() {
+        return this.previousNode;
     }
 
-    public void setStart() {
-        start = true;
+    public void setStart(boolean start) {
+        this.start = start;
+    }
+
+    public boolean isStart() {
+        return this.start;
+    }
+
+    public void setEnd(boolean end) {
+        this.end = end;
     }
 
     public boolean isEnd() {
-        return end;
+        return this.end;
     }
 
-    public void setEnd() {
-        end = true;
+    public void setWall(boolean wall) {
+        this.wall = wall;
     }
 
-    public int getRow() {
-        return row;
-    }
-
-    public int getCol() {
-        return col;
-    }
-
-    public boolean isWeighted() {
-        return weighted;
+    public boolean isWall() {
+        return this.wall;
     }
 
     public void setWeighted(boolean weighted) {
         this.weighted = weighted;
     }
 
-    public void resetNode() {
-        distanceFromStart = Integer.MAX_VALUE;
-        visited = false;
-        start = false;
-        end = false;
-        previousNode = null;
-        this.setBackground(Color.WHITE);
+    public boolean isWeighted() {
+        return this.weighted;
     }
 }
