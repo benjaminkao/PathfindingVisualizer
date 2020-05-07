@@ -29,7 +29,7 @@ public class GridRenderer extends DefaultTableCellRenderer {
             if(cellNode == null) {
                 cell.setBackground(Color.WHITE);
             } else if (cellNode.isShortest()) {
-                cell.setBackground(Color.MAGENTA);
+                cell.setBackground(Color.ORANGE);
             } else if (cellNode.isStart()) {
                 cell.setBackground(new Color(0, 100, 0));
             } else if (cellNode.isEnd()) {
@@ -38,9 +38,14 @@ public class GridRenderer extends DefaultTableCellRenderer {
                 cell.setBackground(Color.BLACK);
             } else if (cellNode.isWeighted()) {
                 if(!cellNode.isVisited()) {
-                    cell.setBackground(new Color(200, 99, 0));
+                    if(!cellNode.isNeighbor()) {
+                        cell.setBackground(new Color(200, 99, 0));
+                    } else {
+                        cell.setBackground(new Color(95, 3, 255));
+                    }
                 } else {
                     cell.setBackground(new Color(155, 75, 255));
+
                 }
             } else {
                 if(cellNode.isNeighbor()){

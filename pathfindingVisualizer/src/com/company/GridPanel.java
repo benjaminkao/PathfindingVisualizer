@@ -9,8 +9,13 @@ public class GridPanel {
 
     public DefaultTableModel grid;
 
+    private int row;
+    private int col;
 
     public GridPanel(int row, int col) {
+        this.row = row;
+        this.col = col;
+
         grid = new DefaultTableModel(row, col) {
             @Override
             public boolean isCellEditable(int row, int col) {
@@ -30,7 +35,7 @@ public class GridPanel {
     }
 
 
-    public int getDistanceFromStartAt(int rowIndex, int columnIndex) {
+    public double getDistanceFromStartAt(int rowIndex, int columnIndex) {
         Node node = (Node) grid.getValueAt(rowIndex, columnIndex);
 
         return node.getDistanceFromStart();
@@ -69,9 +74,6 @@ public class GridPanel {
             case 3:
                 node.setWeighted(activate);
                 break;
-            default:
-                System.out.println("Neighbor: " + node.isNeighbor());
-                System.out.println("Visited: " + node.isVisited());
         }
 
     }
@@ -86,4 +88,13 @@ public class GridPanel {
         tmp.setNeighbor(true);
     }
 
+
+    public void resetGrid() {
+        for(int i = 0; i < row; i++) {
+            for(int j = 0; j < col; j++) {
+                grid.setValueAt(new Node(i, j), i, j);
+            }
+        }
+        grid.fireTableDataChanged();
+    }
 }

@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.Timer;
 
 public class OldDijkstraPanel extends JPanel {
-    public static final int WIDTH = 1000;
+    public static final int WIDTH = 1200;
     public static final int HEIGHT = 800;
 
     private int rows = 50;

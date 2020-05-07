@@ -6,7 +6,7 @@ import java.awt.event.*;
 
 
 public class Node {
-    private int distanceFromStart = Integer.MAX_VALUE;
+    private double distanceFromStart = Integer.MAX_VALUE;
     private Node previousNode = null;
 
     private boolean start = false;
@@ -80,11 +80,11 @@ public class Node {
         return this.col;
     }
 
-    public void setDistanceFromStart(int distanceFromStart) {
+    public void setDistanceFromStart(double distanceFromStart) {
         this.distanceFromStart = distanceFromStart;
     }
 
-    public int getDistanceFromStart() {
+    public double getDistanceFromStart() {
         return distanceFromStart;
     }
 
