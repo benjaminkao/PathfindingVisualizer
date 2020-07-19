@@ -9,11 +9,15 @@ Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's and A*.
 
 
 
-### Two Versions:
-1. New Version:
+### Three Versions:
+1. JavaFX Version:
+   Implemented using JavaFX
+   
+   
+2. Improved Java Grid Version:
    Implemented grid using JTable
    Changed UI
   
   
-2. Old Version:
+3. JButton Version (Can be found within regular Java version):
    Implemented grid using many JButtons
