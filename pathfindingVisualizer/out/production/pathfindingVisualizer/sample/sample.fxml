@@ -1,0 +1,39 @@
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.layout.GridPane?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
+
+    <left>
+        <!--This GridPane is used to organize the buttons that control what type of node the user wants to place-->
+        <GridPane fx:id="buttonGrid" BorderPane.alignment="TOP_LEFT" hgap="10" vgap="10">
+            <Button fx:id="setStartBtn" text="Set Start" onAction="#changeNodeType"
+                GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <Button fx:id="setEndBtn" text="Set End" onAction="#changeNodeType"
+                    GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+            <Button fx:id="setWallBtn" text="Set Wall" onAction="#changeNodeType"
+                    GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <Button fx:id="setWeightedBtn" text="Set Weighted" onAction="#changeNodeType"
+                    GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        </GridPane>
+    </left>
+
+    <center>
+<!--        This GridPane is used as the pathfinding visualizer which users will interact with-->
+        <GridPane fx:id="grid"
+                BorderPane.alignment="CENTER">
+            <columnConstraints>
+<!--        This is empty because need many columns so will be done in initialize() Controller method-->
+            </columnConstraints>
+
+            <rowConstraints>
+<!--                This is empty because need many rows so will be done in initialize() Controller method-->
+            </rowConstraints>
+
+        </GridPane>
+    </center>
+
+
+</BorderPane>
