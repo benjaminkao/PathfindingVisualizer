@@ -4,22 +4,52 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import javafx.scene.control.CheckBox?>
 <BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
+<!--    Sets margin for BorderPane-->
 
+<!--    Elements in left side of BorderPane-->
     <left>
         <!--This GridPane is used to organize the buttons that control what type of node the user wants to place-->
-        <GridPane fx:id="buttonGrid" BorderPane.alignment="TOP_LEFT" hgap="10" vgap="10">
+        <GridPane fx:id="buttonGrid" BorderPane.alignment="TOP_LEFT" hgap="10" vgap="10" prefWidth="150">
+            <BorderPane.margin>
+                <Insets topRightBottomLeft="10.0"/>
+            </BorderPane.margin>
+            <ComboBox fx:id="selectAlgorithm" value="A*"
+                GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.vgrow="always"
+                GridPane.halignment="CENTER" GridPane.fillWidth="true">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="A*"/>
+                        <String fx:value="Depth First Search"/>
+                        <String fx:value="Dijkstra's"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
             <Button fx:id="setStartBtn" text="Set Start" onAction="#changeNodeType"
-                GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.vgrow="always" GridPane.halignment="CENTER"/>
             <Button fx:id="setEndBtn" text="Set End" onAction="#changeNodeType"
-                    GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                    GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.vgrow="always" GridPane.halignment="CENTER"/>
             <Button fx:id="setWallBtn" text="Set Wall" onAction="#changeNodeType"
-                    GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                    GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.vgrow="always" GridPane.halignment="CENTER"/>
             <Button fx:id="setWeightedBtn" text="Set Weighted" onAction="#changeNodeType"
-                    GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                    GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.vgrow="always" GridPane.halignment="CENTER"/>
+            <Label fx:id="setTypeLabel" text=" Selecting Start Node"
+                   GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.rowSpan="2" GridPane.columnSpan="2"
+                   GridPane.vgrow="always" GridPane.halignment="CENTER"/>
+            <CheckBox fx:id="diagonalCheckBox" text="Allow Diagonal"
+                    GridPane.rowIndex="6" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.vgrow="always"
+                      GridPane.halignment="CENTER"/>
+            <Button fx:id="startVisualizerBtn" text="Start Visualizer" onAction="#startVisualizer"
+                    GridPane.rowIndex="7" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.vgrow="always"
+                    GridPane.halignment="CENTER"/>
         </GridPane>
     </left>
 
+<!--    Elements in center of BorderPane-->
     <center>
 <!--        This GridPane is used as the pathfinding visualizer which users will interact with-->
         <GridPane fx:id="grid"

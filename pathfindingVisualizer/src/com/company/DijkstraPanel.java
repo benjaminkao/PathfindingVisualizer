@@ -251,7 +251,7 @@ public class DijkstraPanel {
                 unvisited.add(gridPanel.getNodeAt(row - 1, col - 1));
             }
         }
-        if(diagonal && row - 1 >= 0 && col +1 >= 0) {
+        if(diagonal && row - 1 >= 0 && col +1 < numCols) {
             if(!(gridPanel.getNodeAt(row - 1, col+1)).isNeighbor() && !(gridPanel.getNodeAt(row - 1, col)).isNeighbor() && !(gridPanel.getNodeAt(row, col+1)).isNeighbor()) {
                 unvisited.add(gridPanel.getNodeAt(row - 1, col + 1));
             }
