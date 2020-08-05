@@ -2,13 +2,15 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
@@ -35,7 +37,7 @@ public class Controller {
     //Variables for algorithms
     private String algorithm;
     private final int costStraight = 3;
-    private final int costDiagonal = 2;
+    private final int costDiagonal = 5;
     //This minHeap sorts GridNodes by distanceFromStart
     PriorityQueue<GridNode> minHeap = new PriorityQueue<> ( new Comparator<GridNode> () {
         @Override
@@ -53,9 +55,7 @@ public class Controller {
                 }
 
                 return dx - dy;
-            }
-
-            if(algorithm.equals("Depth First Search")) {
+            } else if(algorithm.equals("Depth First Search (DFS)")) {
                 return y.getDistanceFromStart() - x.getDistanceFromStart();
             }
 
@@ -69,7 +69,7 @@ public class Controller {
     @FXML
     GridPane buttonGrid;
     @FXML
-    ComboBox<String> selectAlgorithm;
+    ChoiceBox<String> algorithmSelector;
     @FXML
     Button setStartBtn;
     @FXML
@@ -90,77 +90,15 @@ public class Controller {
     private int stageWidth;
     private int stageHeight;
     public int contentWidth;
+    private Service<Task<Void>> service;
 
-    //This is the task/thread that will run Dijkstra's/A* algorithm if chosen
-    Task<Void> task = new Task<Void> () {
-        @Override
-        protected Void call () throws Exception
-        {
-            GridNode currentNode;
-            //Until minHeap is empty
-            while ( !minHeap.isEmpty () )
-            {
-                currentNode = minHeap.poll ();
-                if ( currentNode.getCoord ().equals ( endCoord ) )
-                {
-                    found = true;
-                    System.out.println ( "Found shortest path" );
-                    showShortestPath(currentNode);
-                    break;
-                } else
-                {
-
-                    getNeighbors ( currentNode );
-
-                    //If startNode, do not need to change nodeType
-                    if ( !currentNode.getCoord ().equals ( startCoord ) )
-                    {
-
-                        if ( currentNode.getType () == GridNode.WEIGHTEDCHECKING )
-                        {
-                            currentNode.setType ( GridNode.WEIGHTEDCHECKED );
-                        }
-                        else
-                        {
-                            currentNode.setType ( GridNode.NORMALCHECKED );
-                        }
-                    }
-                }
-                try {
-                    Thread.sleep(25);
-
-                } catch (InterruptedException e) {
-                    if(isCancelled ()) {
-                        updateMessage("Cancelled");
-                        break;
-                    }
-                }
-            }
-
-            if(!found) {
-                System.out.println ("Could not find shortest path");
-
-            }
-            //Update startVisualizerBtn text to reset
-            Platform.runLater(()-> {
-                startVisualizerBtn.setText("Reset");
-                startVisualizerBtn.setDisable(false);
-            });
-            return null;
-        }
-
-        @Override
-        protected void failed() {
-            Throwable throwable = this.getException ();
-            throwable.printStackTrace ();
-        }
-    };
 
     @FXML
     protected void initialize ()
     {
         //Disable setStartBtn
         setStartBtn.setDisable ( true );
+        setWeightedBtn.setDisable(true);
 
         //Get width that content must fit into
         contentWidth =
@@ -353,6 +291,7 @@ public class Controller {
     @FXML
     protected void changeNodeType ( ActionEvent actionEvent )
     {
+        algorithm = algorithmSelector.getValue();
         Button buttonPressed = ( Button ) actionEvent.getSource ();
         String buttonType = buttonPressed.getText ();
 
@@ -392,7 +331,11 @@ public class Controller {
         setStartBtn.setDisable ( false );
         setEndBtn.setDisable ( false );
         setWallBtn.setDisable ( false );
-        setWeightedBtn.setDisable ( false );
+
+        if(algorithm.equals("Depth First Search (DFS)") || algorithm.equals("Breadth First Search (BFS)"))
+        {
+            setWeightedBtn.setDisable ( true );
+        }
 
         //Disable button that was clicked
         buttonPressed.setDisable ( true );
@@ -403,17 +346,29 @@ public class Controller {
     }
 
     @FXML
+    protected void changeAlgorithm ( ActionEvent actionEvent )
+    {
+        algorithm = algorithmSelector.getValue();
+
+        if(algorithm.equals("Depth First Search (DFS)") || algorithm.equals("Breadth First Search (BFS)")) {
+            setWeightedBtn.setDisable(true);
+        } else {
+            setWeightedBtn.setDisable(false);
+        }
+    }
+
+    @FXML
     protected void startVisualizer ( ActionEvent actionEvent )
     {
         //Check if startVisualizerBtn text is "Start Visualizer"
         if(startVisualizerBtn.getText().equals("Start Visualizer"))
         {
             //Get all needed user selected algorithm variables before starting algorithm
-            algorithm = selectAlgorithm.getValue ();
+            algorithm = algorithmSelector.getValue();
             allowDiagonal = diagonalCheckBox.isSelected ();
 
             //Disable all constant user selected algorithm variables
-            selectAlgorithm.setDisable ( true );
+            algorithmSelector.setDisable ( true );
             startVisualizerBtn.setDisable ( true );
             diagonalCheckBox.setDisable ( true );
             setStartBtn.setDisable ( true );
@@ -427,6 +382,9 @@ public class Controller {
                     GridNode node = (GridNode) gridChildren.get(NUMROWS * j + i);
 
                     node.setType(GridNode.NORMAL);
+                    node.setPrevious(null);
+                    node.setDistanceFromStart ( Integer.MAX_VALUE );
+                    node.setHeuristic(Integer.MAX_VALUE);
                 }
             }
 
@@ -443,7 +401,7 @@ public class Controller {
             setWallBtn.setDisable(false);
             setWeightedBtn.setDisable(false);
 
-            selectAlgorithm.setDisable(false);
+            algorithmSelector.setDisable(false);
             diagonalCheckBox.setDisable(false);
 
             minHeap.clear();
@@ -469,8 +427,79 @@ public class Controller {
         //Add startNode to minHeap
         minHeap.add ( node );
 
-        Thread thread = new Thread(task);
-        thread.start();
+        //This is the task/thread that will run Dijkstra's/A* algorithm if chosen
+        Task<Void> task = new Task<Void> () {
+            @Override
+            protected Void call () throws Exception
+            {
+                GridNode currentNode;
+                //Until minHeap is empty
+                while ( !minHeap.isEmpty () )
+                {
+                    currentNode = minHeap.poll ();
+                    if ( currentNode.getCoord ().equals ( endCoord ) )
+                    {
+                        found = true;
+                        showShortestPath(currentNode);
+                        break;
+                    } else
+                    {
+
+                        getNeighbors ( currentNode );
+
+                        //If startNode, do not need to change nodeType
+                        if ( !currentNode.getCoord ().equals ( startCoord ) )
+                        {
+
+                            if ( currentNode.getType () == GridNode.WEIGHTEDCHECKING )
+                            {
+                                currentNode.setType ( GridNode.WEIGHTEDCHECKED );
+                            }
+                            else
+                            {
+                                currentNode.setType ( GridNode.NORMALCHECKED );
+                            }
+                        }
+                    }
+                    try {
+                        Thread.sleep(25);
+
+                    } catch (InterruptedException e) {
+                        if(isCancelled ()) {
+                            updateMessage("Cancelled");
+                            break;
+                        }
+                    }
+                }
+
+                if(!found) {
+                    System.out.println ("Could not find shortest path");
+
+                }
+                //Update startVisualizerBtn text to reset
+                Platform.runLater(()-> {
+                    startVisualizerBtn.setText("Reset");
+                    startVisualizerBtn.setDisable(false);
+                });
+                return null;
+            }
+
+            @Override
+            protected void failed() {
+                Throwable throwable = this.getException ();
+                throwable.printStackTrace ();
+            }
+        };
+
+        service = new Service<Task<Void>> () {
+            @Override
+            protected Task createTask ()
+            {
+                return task;
+            }
+        };
+
+        service.restart();
 
     }
 
@@ -481,7 +510,7 @@ public class Controller {
      */
     private void getNeighbors ( GridNode node )
     {
-        boolean dfs = algorithm.equals("Depth First Search");
+        boolean dfs = algorithm.equals("Depth First Search (DFS)");
         //Cache node coordinates
         Point coord = node.getCoord ();
 
@@ -602,7 +631,10 @@ public class Controller {
             }
         }
 
-        addNeighborDFS(neighbors, node);
+        if(dfs)
+        {
+            addNeighborDFS ( neighbors, node );
+        }
     }
 
     /**
@@ -612,8 +644,10 @@ public class Controller {
      * @param x
      * @param y
      */
-    private void addNeighborDijkstraAStar ( GridNode node, int x, int y, boolean diagonal )
+    private void addNeighborDijkstraAStar ( GridNode node, int x, int y, boolean diagonal)
     {
+        boolean bfs = algorithm.equals ("Breadth First Search (BFS)");
+
         GridNode tmp = ( GridNode ) gridChildren.get ( NUMROWS * x + y );
 
         int nodeType = tmp.getType ();
@@ -624,31 +658,29 @@ public class Controller {
             tmp.setPrevious ( node );
 
             //Set color of neighbor node if it is weighted or normal, not if node is end node
-            if ( nodeType == GridNode.WEIGHTED )
-            {
-                tmp.setType ( GridNode.WEIGHTEDCHECKING );
-            }
-            else if(nodeType == GridNode.NORMAL)
-            {
-                tmp.setType ( GridNode.NORMALCHECKING );
-            } else {
-                tmp.setType(GridNode.ENDCHECKING);
-            }
+                if ( nodeType == GridNode.WEIGHTED && !bfs)
+                {
+                    tmp.setType ( GridNode.WEIGHTEDCHECKING );
+                }
+                else if ( nodeType == GridNode.NORMAL )
+                {
+                    tmp.setType ( GridNode.NORMALCHECKING );
+                }
+                else
+                {
+                    tmp.setType ( GridNode.ENDCHECKING );
+                }
 
             int newDistanceFromStart = node.getDistanceFromStart();
-
-            //If diagonal, add additional cost of traveling diagonal
-            if(diagonal) {
-                newDistanceFromStart += costDiagonal;
-            }
-
             //Update distanceFromStart
             if(algorithm.equals("Dijkstra's")) {
-                dijkstra(tmp, newDistanceFromStart);
+                dijkstra(tmp, newDistanceFromStart, diagonal, false);
             } else if(algorithm.equals("A*") && !allowDiagonal) {
                 aStarManhatten(tmp, newDistanceFromStart);
             } else if(algorithm.equals("A*")) {
                 aStarDiagonal(tmp, newDistanceFromStart);
+            } else if( bfs) {
+                dijkstra(tmp, newDistanceFromStart, diagonal, true);
             }
 
             //Add neighbor node to minHeap
@@ -673,8 +705,8 @@ public class Controller {
                 //Set previous node
                 tmp.setPrevious ( previous );
 
-                /**Since Depth First Search is an unweighted search algorithm do not need to worry about weighted or
-                 * unweighted
+                /*Since Depth First Search is an unweighted search algorithm do not need to worry about weighted or
+                  unweighted
                  */
                 if ( nodeType == GridNode.END )
                 {
@@ -700,11 +732,21 @@ public class Controller {
      * @param node
      * @param previousDistanceFromStart
      */
-    private void dijkstra(GridNode node, int previousDistanceFromStart) {
-        if(node.getType() == GridNode.WEIGHTED) {
-            node.setDistanceFromStart(previousDistanceFromStart + (3 * costStraight));
+    private void dijkstra(GridNode node, int previousDistanceFromStart, boolean diagonal, boolean bfs) {
+        if(!bfs && node.getType() == GridNode.WEIGHTED) {
+            if(diagonal) {
+                node.setDistanceFromStart ( previousDistanceFromStart + (2 * costDiagonal) );
+            } else
+            {
+                node.setDistanceFromStart ( previousDistanceFromStart + (3 * costStraight) );
+            }
         } else {
-            node.setDistanceFromStart(previousDistanceFromStart + costStraight);
+            if(diagonal) {
+                node.setDistanceFromStart ( previousDistanceFromStart + costDiagonal );
+            } else
+            {
+                node.setDistanceFromStart ( previousDistanceFromStart + costStraight );
+            }
         }
     }
 
@@ -782,11 +824,8 @@ public class Controller {
      */
     public void shutdown ()
     {
-        if(timer != null)
-        {
-            timer.cancel ();
-        }
         Platform.exit();
     }
 
 }
+

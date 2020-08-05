@@ -8,6 +8,10 @@
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.control.TreeItem?>
+<?import javafx.scene.control.Separator?>
 <BorderPane fx:controller="sample.Controller" xmlns:fx="http://javafx.com/fxml">
 <!--    Sets margin for BorderPane-->
 
@@ -18,17 +22,15 @@
             <BorderPane.margin>
                 <Insets topRightBottomLeft="10.0"/>
             </BorderPane.margin>
-            <ComboBox fx:id="selectAlgorithm" value="A*"
-                GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.vgrow="always"
-                GridPane.halignment="CENTER" GridPane.fillWidth="true">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="A*"/>
-                        <String fx:value="Depth First Search"/>
-                        <String fx:value="Dijkstra's"/>
-                    </FXCollections>
-                </items>
-            </ComboBox>
+            <ChoiceBox fx:id="algorithmSelector" value="Breadth First Search (BFS)" onAction="#changeAlgorithm"
+                       GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.vgrow="always"
+                       GridPane.halignment="CENTER" GridPane.fillWidth="true">
+                <String fx:value="Breadth First Search (BFS)"/>
+                <String fx:value="Depth First Search (DFS)"/>
+                <Separator/>
+                <String fx:value="A*"/>
+                <String fx:value="Dijkstra's"/>
+            </ChoiceBox>
             <Button fx:id="setStartBtn" text="Set Start" onAction="#changeNodeType"
                 GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.vgrow="always" GridPane.halignment="CENTER"/>
             <Button fx:id="setEndBtn" text="Set End" onAction="#changeNodeType"
