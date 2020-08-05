@@ -2,7 +2,7 @@
 Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's, A*, and Depth First Search (DFS).
 
 
-##Latest Update:
+## Latest Update:
 
 Finished creating basic JavaFX version:
 - Added Depth First Search (DFS) algorithm
