@@ -5,7 +5,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class MainFX extends Application {
@@ -22,7 +21,7 @@ public class MainFX extends Application {
     @Override
     public void start ( Stage primaryStage ) throws Exception
     {
-        FXMLLoader loader = new FXMLLoader (getClass().getResource("sample.fxml"));
+        FXMLLoader loader = new FXMLLoader (getClass().getResource( "Visualizer.fxml" ));
         Parent root = loader.load();
 
         Controller controller = loader.getController();

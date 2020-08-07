@@ -18,9 +18,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.Timer;
 
 public class Controller {
     public Stage stage;
@@ -65,6 +67,8 @@ public class Controller {
     boolean allowDiagonal = false;
     //All FXML objects
     @FXML
+    BorderPane root;
+    @FXML
     GridPane grid;
     @FXML
     GridPane buttonGrid;
@@ -101,8 +105,9 @@ public class Controller {
         setWeightedBtn.setDisable(true);
 
         //Get width that content must fit into
+
         contentWidth =
-                MainFX.WINWIDTH - ((int) buttonGrid.getPrefWidth() + 2 * ((int) BorderPane.getMargin(buttonGrid).getLeft()));
+                MainFX.WINWIDTH - ((int) buttonGrid.getPrefWidth() - (2 * (int) buttonGrid.getPadding().getLeft()));
 
         //Get number of columns that will fit on page within contentWidth
         NUMCOLS = contentWidth / MainFX.NODEWIDTH;
@@ -296,7 +301,7 @@ public class Controller {
         String buttonType = buttonPressed.getText ();
 
         //Change currentNodeType to user selected node type
-        if ( buttonType.equals ( "Set Start" ) )
+        if ( buttonType.equals ( "Start" ) )
         {
             currentNodeType = GridNode.START;
             if(!placedStart)
@@ -306,7 +311,7 @@ public class Controller {
                 setTypeLabel.setText(" Moving Start Node");
             }
         }
-        else if ( buttonType.equals ( "Set End" ) )
+        else if ( buttonType.equals ( "End" ) )
         {
             currentNodeType = GridNode.END;
             if(!placedEnd)
@@ -316,12 +321,12 @@ public class Controller {
                 setTypeLabel.setText(" Moving End Node");
             }
         }
-        else if ( buttonType.equals ( "Set Wall" ) )
+        else if ( buttonType.equals ( "Wall" ) )
         {
             currentNodeType = GridNode.WALL;
             setTypeLabel.setText(" Selecting Wall Nodes");
         }
-        else if ( buttonType.equals ( "Set Weighted" ) )
+        else if ( buttonType.equals ( "Weighted" ) )
         {
             currentNodeType = GridNode.WEIGHTED;
             setTypeLabel.setText(" Selecting Weighted Nodes");
@@ -355,6 +360,12 @@ public class Controller {
         } else {
             setWeightedBtn.setDisable(false);
         }
+    }
+
+    @FXML
+    protected void checkboxTransition ( ActionEvent actionEvent )
+    {
+
     }
 
     @FXML

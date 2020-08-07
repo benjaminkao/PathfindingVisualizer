@@ -12,24 +12,24 @@ public class GridNode extends StackPane {
             WEIGHTEDCHECKED = 5, NORMALCHECKING = 6, WEIGHTEDCHECKING = 7, ENDCHECKING = 8, SHORTESTNORMAL = 9,
             SHORTESTWEIGHTED = 10;
 
-    public final Insets nodeInsets = new Insets ( 1 );
-    public final CornerRadii nodeRadii = new CornerRadii(3);
-
-    public final Background WHITE = new Background ( new BackgroundFill ( Color.WHITE, nodeRadii, nodeInsets ) );
-    public final Background GREEN = new Background ( new BackgroundFill ( Color.GREEN, nodeRadii, nodeInsets ) );
-    public final Background DEEPPINK = new Background ( new BackgroundFill ( Color.DEEPPINK, nodeRadii, nodeInsets ) );
-    public final Background BLACK = new Background ( new BackgroundFill ( Color.BLACK, nodeRadii, nodeInsets ) );
-    public final Background ORANGE = new Background ( new BackgroundFill ( Color.ORANGE, nodeRadii, nodeInsets ) );
-    public final Background BLUE = new Background ( new BackgroundFill ( Color.BLUE, nodeRadii, nodeInsets ) );
-    public final Background LIGHTBLUE = new Background ( new BackgroundFill ( Color.LIGHTBLUE, nodeRadii,
-            nodeInsets ) );
-    public final Background PINK = new Background ( new BackgroundFill ( Color.PINK, nodeRadii, nodeInsets ) );
-    public final Background PURPLE = new Background ( new BackgroundFill ( Color.MEDIUMPURPLE, nodeRadii, nodeInsets ) );
-    public final Background MAGENTA = new Background ( new BackgroundFill ( Color.MAGENTA, nodeRadii, nodeInsets ) );
-    public final Background DARKRED = new Background ( new BackgroundFill ( Color.DARKRED, nodeRadii, nodeInsets ) );
-    public final Background CRIMSON = new Background(new BackgroundFill(Color.CRIMSON, nodeRadii, nodeInsets));
-
     private Point coord = new Point ( -1, -1 );
+
+    public final String WHITE = "3f4851";
+    public final String GREEN = "00FF00";
+    public final String CRIMSON = Color.CRIMSON.toString().substring(2);
+    public final String BLACK = "090E18";
+    public final String ORANGE = Color.ORANGE.toString().substring(2);
+    public final String LIGHTBLUE = Color.LIGHTBLUE.toString().substring(2);
+    public final String PURPLE = Color.PURPLE.toString().substring(2);
+    public final String BLUE = "0e9dd9";
+    public final String MAGENTA = Color.MAGENTA.toString().substring(2);
+    public final String DARKRED = Color.DARKRED.toString().substring(2);
+    public final String PINK = Color.PINK.toString().substring(2);
+    public final String DEEPPINK = Color.DEEPPINK.toString().substring(2);
+
+
+
+
 
     //This variable will be used in the minHeap to sort by ascending distance
     private int distanceFromStart = Integer.MAX_VALUE;
@@ -50,6 +50,7 @@ public class GridNode extends StackPane {
 
     public GridNode ( int type, int x, int y )
     {
+        this.getStyleClass().add("grid-node");
         this.type = type;
         this.coord.setLocation ( x, y );
         updateColor ();
@@ -114,46 +115,49 @@ public class GridNode extends StackPane {
         switch (this.type)
         {
             case -1:
-                this.setBackground ( WHITE );
+                this.setBackgroundColor ( WHITE );
                 break;
             case 0:
-                this.setBackground ( GREEN );
+                this.setBackgroundColor ( GREEN );
                 break;
             case 1:
-                this.setBackground ( CRIMSON );
+                this.setBackgroundColor ( CRIMSON );
                 break;
             case 2:
-                this.setBackground ( BLACK );
+                this.setBackgroundColor ( BLACK );
                 break;
             case 3:
-                this.setBackground ( ORANGE );
+                this.setBackgroundColor ( ORANGE );
                 break;
             case 4:
-                this.setBackground ( LIGHTBLUE );
+                this.setBackgroundColor ( LIGHTBLUE );
                 break;
             case 5:
-                this.setBackground ( PURPLE );
+                this.setBackgroundColor ( PURPLE );
                 break;
             case 6:
-                this.setBackground ( BLUE );
+                this.setBackgroundColor ( BLUE );
                 break;
             case 7:
-                this.setBackground ( MAGENTA );
+                this.setBackgroundColor ( MAGENTA );
                 break;
             case 8:
-                this.setBackground ( DARKRED );
+                this.setBackgroundColor ( DARKRED );
                 break;
             case 9:
-                this.setBackground ( PINK );
+                this.setBackgroundColor ( PINK );
                 break;
             case 10:
-                this.setBackground(DEEPPINK);
+                this.setBackgroundColor (DEEPPINK);
                 break;
             default:
                 System.out.println ( "NODE TYPE ERROR: Invalid node type specifier" );
-                this.setBackground ( WHITE );
+                this.setBackgroundColor ( WHITE );
         }
     }
 
+    private void setBackgroundColor(String string) {
+        this.setStyle("-fx-background-color: #" + string);
+    }
 
 }
