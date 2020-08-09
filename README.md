@@ -23,15 +23,25 @@ Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's, A*, and 
 
 ## Latest Update:
 
+
+### August 9th, 2020
+Updated UI; Added Erase Ability
+
+- Got rid of terrible looking default Windows border
+- Created new dark theme border, with icons made from SVGPaths
+- Added window resize and drag to new border
+- Added ability to "erase" nodes on right click
+
+
+## Previous Updates:
+
+
 ### August 6th, 2020
 Updated UI
 
 - Now using styling sheet for UI
 - Dark theme
 - Created custom checkmark for checkbox using SVG path
-
-
-## Previous Updates:
 
 
 ### August 5th, 2020
