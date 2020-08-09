@@ -2,8 +2,6 @@ package sample;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -12,13 +10,12 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.RowConstraints;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
@@ -34,8 +31,8 @@ public class Controller {
     public Point startCoord = new Point ( -1, -1 );
     public Point endCoord = new Point ( -1, -1 );
     //Variables that require FXML Variables
-    public int NUMROWS = (MainFX.WINHEIGHT) / MainFX.NODEWIDTH;
-    public int NUMCOLS;
+    public int NUMROWS = 50;
+    public int NUMCOLS = 50;
     //Variables for algorithms
     private String algorithm;
     private final int costStraight = 3;
@@ -88,6 +85,8 @@ public class Controller {
     CheckBox diagonalCheckBox;
     @FXML
     Label setTypeLabel;
+    @FXML
+    SVGPath menuMaximizeIcon;
     private List<Node> gridChildren;
     private Timer timer;
 
@@ -96,6 +95,8 @@ public class Controller {
     public int contentWidth;
     private Service<Task<Void>> service;
 
+    private double offsetX;
+    private double offsetY;
 
     @FXML
     protected void initialize ()
@@ -103,21 +104,8 @@ public class Controller {
         //Disable setStartBtn
         setStartBtn.setDisable ( true );
         setWeightedBtn.setDisable(true);
-
-        //Get width that content must fit into
-
-        contentWidth =
-                MainFX.WINWIDTH - ((int) buttonGrid.getPrefWidth() - (2 * (int) buttonGrid.getPadding().getLeft()));
-
-        //Get number of columns that will fit on page within contentWidth
-        NUMCOLS = contentWidth / MainFX.NODEWIDTH;
-        initializeGrid ();
-        gridChildren = grid.getChildren ();
-
-        System.out.println ( "Number of Rows: " + grid.getRowCount () );
-        System.out.println ( "Number of Cols: " + grid.getColumnCount () );
-
         setTypeLabel.setWrapText(true);
+        initializeGrid();
     }
 
 
@@ -134,12 +122,20 @@ public class Controller {
         //Add column and row constraints for grid
         for (int i = 0; i < NUMCOLS; i++)
         {
-            columns.add ( new ColumnConstraints ( MainFX.NODEWIDTH ) );
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow( Priority.SOMETIMES);
+            columnConstraints.setPercentWidth ( NUMCOLS );
+            columnConstraints.setMaxWidth(20);
+            columns.add ( columnConstraints );
         }
 
         for (int i = 0; i < NUMROWS; i++)
         {
-            rows.add ( new RowConstraints ( MainFX.NODEWIDTH ) );
+            RowConstraints rowConstraints = new RowConstraints ();
+            rowConstraints.setVgrow ( Priority.SOMETIMES );
+            rowConstraints.setPercentHeight ( NUMROWS );
+            rowConstraints.setMaxHeight ( 20 );
+            rows.add ( rowConstraints );
         }
 
 
@@ -170,77 +166,111 @@ public class Controller {
         //On mouse click
         node.setOnMouseClicked ( event -> {
             //If node clicked already has a type
-            if ( node.getType () == -1 )
+            if(event.getButton () == MouseButton.PRIMARY)
             {
-                //If start node already placed and about to place another start node, move start node
-                if ( placedStart && currentNodeType == GridNode.START )
+                if ( node.getType () == -1 )
                 {
-                    //Get currentStartNode
-                    GridNode currentStart = ( GridNode ) gridChildren.get ( NUMROWS * startCoord.x + startCoord.y );
-
-
-                    //Reset currentStartNode
-                    currentStart.setType ( GridNode.NORMAL );
-
-                    //Set node to new start and replace startCoord with new coordinates
-                    node.setType ( currentNodeType );
-                    startCoord.setLocation ( col, row );
-                }
-                //If end node already placed and about to place another end node, move end node
-                else if ( placedEnd && currentNodeType == GridNode.END )
-                {
-                    //Get currentEndNode
-                    GridNode currentEnd = ( GridNode ) gridChildren.get ( NUMROWS * endCoord.x + endCoord.y );
-
-                    //Reset currentEndNode
-                    currentEnd.setType ( GridNode.NORMAL );
-
-                    //Set node to new end and replace endCoord with new coordinates
-                    node.setType ( currentNodeType );
-                    endCoord.setLocation ( col, row );
-                }
-                else
-                {
-                    node.setType ( currentNodeType );
-                    if ( currentNodeType == GridNode.START )
+                    //If start node already placed and about to place another start node, move start node
+                    if ( placedStart && currentNodeType == GridNode.START )
                     {
-                        //Set placed start node to true
-                        placedStart = true;
+                        //Get currentStartNode
+                        GridNode currentStart = ( GridNode ) gridChildren.get ( NUMROWS * startCoord.x + startCoord.y );
 
-                        //Change setTypeLabel text
-                        setTypeLabel.setText(" Moving Start Node");
 
-                        //Store coordinates into start node point
+                        //Reset currentStartNode
+                        currentStart.setType ( GridNode.NORMAL );
+
+                        //Set node to new start and replace startCoord with new coordinates
+                        node.setType ( currentNodeType );
                         startCoord.setLocation ( col, row );
                     }
-                    if ( currentNodeType == GridNode.END )
+                    //If end node already placed and about to place another end node, move end node
+                    else if ( placedEnd && currentNodeType == GridNode.END )
                     {
-                        //Set placed end node to true
-                        placedEnd = true;
+                        //Get currentEndNode
+                        GridNode currentEnd = ( GridNode ) gridChildren.get ( NUMROWS * endCoord.x + endCoord.y );
 
-                        //Change setTypeLabel text
-                        setTypeLabel.setText(" Moving End Node");
+                        //Reset currentEndNode
+                        currentEnd.setType ( GridNode.NORMAL );
 
-                        //Store coordinates into end node point
+                        //Set node to new end and replace endCoord with new coordinates
+                        node.setType ( currentNodeType );
                         endCoord.setLocation ( col, row );
                     }
+                    else
+                    {
+                        node.setType ( currentNodeType );
+                        if ( currentNodeType == GridNode.START )
+                        {
+                            //Set placed start node to true
+                            placedStart = true;
+
+                            //Change setTypeLabel text
+                            setTypeLabel.setText ( " Moving Start Node" );
+
+                            //Store coordinates into start node point
+                            startCoord.setLocation ( col, row );
+                        }
+                        if ( currentNodeType == GridNode.END )
+                        {
+                            //Set placed end node to true
+                            placedEnd = true;
+
+                            //Change setTypeLabel text
+                            setTypeLabel.setText ( " Moving End Node" );
+
+                            //Store coordinates into end node point
+                            endCoord.setLocation ( col, row );
+                        }
+                    }
                 }
+            } else if(event.getButton() == MouseButton.SECONDARY)
+            {       //If right click, "erase"
+                if(node.getType() == GridNode.NORMAL) {
+                    return;
+                }
+                if(node.getType() == GridNode.START) {
+                    placedStart = false;
+                } else if(node.getType() == GridNode.END) {
+                    placedEnd = false;
+                }
+                node.setType(GridNode.NORMAL);
             }
         } );
 
         //If user starts to drag mouse, enable mouse drag
         node.setOnDragDetected ( event -> {
-            if ( currentNodeType != GridNode.START && currentNodeType != GridNode.END )
+            if(event.getButton() == MouseButton.PRIMARY)
             {
-                node.startFullDrag ();
+                if ( currentNodeType != GridNode.START && currentNodeType != GridNode.END )
+                {
+                    node.startFullDrag ();
+                }
+            } else if(event.getButton() == MouseButton.SECONDARY){
+                node.startFullDrag();
             }
         } );
 
         //Update node type on mouse drag
         node.setOnMouseDragEntered ( event -> {
-            if ( node.getType () == -1 && currentNodeType != GridNode.START && currentNodeType != GridNode.END )
+            if(event.getButton() == MouseButton.PRIMARY)
             {
-                node.setType ( currentNodeType );
+                if ( node.getType () == -1 && currentNodeType != GridNode.START && currentNodeType != GridNode.END )
+                {
+                    node.setType ( currentNodeType );
+                }
+            } else if(event.getButton() == MouseButton.SECONDARY)
+            {       //If right click, then "erase"
+                if(node.getType() == GridNode.NORMAL) {
+                    return;
+                }
+
+                if(node.getType() == GridNode.START) {
+                    placedStart = false;
+                } else if(node.getType() == GridNode.END) {
+                    placedEnd = false;
+                }
+                node.setType(GridNode.NORMAL);
             }
         } );
 
@@ -255,7 +285,7 @@ public class Controller {
     public void sendStage ( Stage stage )
     {
         this.stage = stage;
-
+        WindowResizeHelper.addResizeListener ( stage );
         try
         {
             System.out.println ( "RECEIVED STAGE" );
@@ -838,5 +868,55 @@ public class Controller {
         Platform.exit();
     }
 
+
+    @FXML
+    protected void getWindowLocation (MouseEvent mouseEvent) {
+
+        offsetX = stage.getX () - mouseEvent.getScreenX();
+        offsetY = stage.getY() - mouseEvent.getScreenY();
+        System.out.println (offsetX);
+        System.out.println (offsetY);
+    }
+
+    @FXML
+    protected void moveWindow (MouseEvent mouseEvent) {
+        stage.setX(mouseEvent.getScreenX () + offsetX);
+        stage.setY(mouseEvent.getScreenY () + offsetY);
+    }
+
+    @FXML
+    protected void minimize (MouseEvent mouseEvent) {
+        stage.setIconified ( true );
+    }
+
+    @FXML
+    protected void maximize ( MouseEvent mouseEvent) {
+        if(stage.isMaximized()) {       //If stage is already maximized
+            //Set window size to previous stageHeight and stageWidth
+            stage.setMaximized(false);
+            stage.setHeight(stageHeight);
+            stage.setWidth(stageWidth);
+
+            //Change icon back to rectangle
+            menuMaximizeIcon.setContent("M 5 5 L 5 15 L 15 15 L 15 5 Z");
+        } else {
+            //Store previous stageHeight and stageWidth
+            stageHeight = (int) stage.getHeight();
+            stageWidth = (int) stage.getWidth();
+
+            //Maximize window
+            stage.setMaximized(true);
+
+            menuMaximizeIcon.setContent("M 3 5 L 3 13 L 11 13 L 11 5 L 3 5 M 6 5 L 6 3 L 14 3 L 14 11 L 11 11");
+        }
+
+    }
+
+    @FXML
+    protected void close( MouseEvent mouseEvent) {
+        System.out.println ("Should close program");
+        stage.close();
+        Platform.exit();
+    }
 }
 
