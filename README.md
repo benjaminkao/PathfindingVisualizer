@@ -24,6 +24,16 @@ Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's, A*, and 
 ## Latest Update:
 
 
+### August 10th, 2020
+Added Algorithm Descriptions; Minor Updates
+
+- Added an algorithm descriptions tabe to Settings
+- Disabled all buttons and grid visualizer after visualizer is started so that the start and end nodes can not be moved during the pathfinding anymore
+
+
+## Previous Updates:
+
+
 ### August 9th, 2020
 Updated UI; Fixed Pathfinding Algorithm Issues
 
@@ -41,9 +51,6 @@ Updated UI; Added Erase Ability
 - Created new dark theme border, with icons made from SVGPaths
 - Added window resize and drag to new border
 - Added ability to "erase" nodes on right click
-
-
-## Previous Updates:
 
 
 ### August 6th, 2020
