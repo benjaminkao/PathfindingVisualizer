@@ -25,6 +25,16 @@ Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's, A*, and 
 
 
 ### August 9th, 2020
+Updated UI; Fixed Pathfinding Algorithm Issues
+
+- Fixed window resize when resizing from north, northwest, and west directions so that it actually works
+- Added menu bar, giving users another option to close application
+- Users can also access a controls menu from the menu bar that shows how to use the application
+- Fixed issue with placing nodes where application would crash due to NullPointerException, now users can run the pathfinding visualizer
+- Fixed issue where Dijkstra's Algorithm would find a longer path to the end node even though a shorter path exists
+- Now when the end node is added to the checking queue, all other nodes are disregarded, which will slightly increase the speed of Breadth First Search (BFS) and Dijkstra's
+
+
 Updated UI; Added Erase Ability
 
 - Got rid of terrible looking default Windows border
