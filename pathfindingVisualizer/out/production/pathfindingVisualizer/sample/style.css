@@ -168,6 +168,7 @@
 .settings-btn {
     -fx-alignment: center-left;
     -fx-background-color: #222831;
+    -fx-text-fill: #ffffff;
     -fx-border-width: 0 0 0.5 0;
 }
 
@@ -175,6 +176,14 @@
     -fx-background-color: #323841;
 }
 
+.settings-btn:selected {
+    -fx-background-color: #323841;
+}
+
+.settings-unselected {
+    -fx-pref-height: 0;
+    -fx-visible: false;
+}
 
 #settings-navigation {
     -fx-background-color: #222831;

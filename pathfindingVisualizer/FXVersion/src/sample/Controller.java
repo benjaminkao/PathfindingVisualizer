@@ -95,6 +95,7 @@ public class Controller {
     Label setTypeLabel;
     @FXML
     SVGPath menuMaximizeIcon;
+
     private List<Node> gridChildren;
     private Timer timer;
 
@@ -114,7 +115,7 @@ public class Controller {
         setWeightedBtn.setDisable(true);
         setTypeLabel.setWrapText(true);
         initializeGrid();
-        gridChildren = grid.getChildren();
+        gridChildren = grid.getChildren ();
     }
 
 
@@ -159,6 +160,7 @@ public class Controller {
 
 
         grid.setGridLinesVisible ( false );
+
         grid.requestFocus ();
     }
 
@@ -369,11 +371,6 @@ public class Controller {
         }
     }
 
-    @FXML
-    protected void checkboxTransition ( ActionEvent actionEvent )
-    {
-
-    }
 
     @FXML
     protected void startVisualizer ( ActionEvent actionEvent )
@@ -391,6 +388,10 @@ public class Controller {
             diagonalCheckBox.setDisable ( true );
             setStartBtn.setDisable ( true );
             setEndBtn.setDisable ( true );
+            setWeightedBtn.setDisable(true);
+            setWallBtn.setDisable(true);
+
+            grid.setDisable(true);
 
             startAlgorithm ();
         } else if(startVisualizerBtn.getText().equals("Reset")) {   //Reset program
@@ -430,6 +431,7 @@ public class Controller {
             startVisualizerBtn.setText("Start Visualizer");
 
             //Give focus back to grid
+            grid.setDisable(false);
             grid.requestFocus();
         }
     }

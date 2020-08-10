@@ -14,18 +14,18 @@ public class GridNode extends StackPane {
 
     private Point coord = new Point ( -1, -1 );
 
-    public final String WHITE = "3f4851";
-    public final String GREEN = "00FF00";
-    public final String CRIMSON = Color.CRIMSON.toString().substring(2);
-    public final String BLACK = "090E18";
-    public final String ORANGE = Color.ORANGE.toString().substring(2);
-    public final String LIGHTBLUE = Color.LIGHTBLUE.toString().substring(2);
-    public final String PURPLE = Color.PURPLE.toString().substring(2);
-    public final String BLUE = "0e9dd9";
-    public final String MAGENTA = Color.MAGENTA.toString().substring(2);
-    public final String DARKRED = Color.DARKRED.toString().substring(2);
-    public final String PINK = Color.PINK.toString().substring(2);
-    public final String DEEPPINK = Color.DEEPPINK.toString().substring(2);
+    public final static String WHITE = "3f4851";
+    public final static String GREEN = "00FF00";
+    public final static String CRIMSON = Color.CRIMSON.toString().substring(2);
+    public final static String BLACK = "090E18";
+    public final static String ORANGE = Color.ORANGE.toString().substring(2);
+    public final static String LIGHTBLUE = Color.LIGHTBLUE.toString().substring(2);
+    public final static String PURPLE = Color.PURPLE.toString().substring(2);
+    public final static String BLUE = "0e9dd9";
+    public final static String MAGENTA = Color.MAGENTA.toString().substring(2);
+    public final static String DARKRED = Color.DARKRED.toString().substring(2);
+    public final static String PINK = Color.PINK.toString().substring(2);
+    public final static String DEEPPINK = Color.DEEPPINK.toString().substring(2);
 
 
 

@@ -13,21 +13,21 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="sample.SettingsController" stylesheets="@style.css"
-            prefHeight="600.0" prefWidth="500.0" id="root">
+            prefHeight="600.0" prefWidth="500.0" fx:id="root" id="root">
 
     <left>
         <VBox id="settings-navigation" prefWidth="100">
             <BorderPane.margin>
                 <Insets right="10"/>
             </BorderPane.margin>
-            <Button text="Controls" onAction="#showControls" styleClass="settings-btn" prefWidth="100"/>
+            <ToggleButton fx:id="controlsBtn" text="Controls" onAction="#showControls" styleClass="settings-btn" prefWidth="100"/>
+            <ToggleButton fx:id="algorithmsBtn" text="Algorithms" onAction="#showAlgorithms" styleClass="settings-btn" prefWidth="100"/>
         </VBox>
     </left>
 
 
     <center>
-        <VBox fx:id="menuControls" id="menu-controls" styleClass="settings-vbox"
-              visible="false">
+        <VBox fx:id="menuControls" id="menu-controls" styleClass="settings-vbox" visible="true">
             <BorderPane.margin>
                 <Insets top="10" right="10"/>
             </BorderPane.margin>
@@ -35,6 +35,13 @@
             <Label fx:id="textControls" styleClass="text-body" wrapText="true"/>
             <Label styleClass="text-header" text="Restraints:"/>
             <Label fx:id="textRestraints" styleClass="text-body" wrapText="true"/>
+        </VBox>
+        <VBox  fx:id="menuAlgorithms" id="menu-algorithms" styleClass="settings-vbox" visible="false">
+            <BorderPane.margin>
+                <Insets top="10" right="10"/>
+            </BorderPane.margin>
+            <Label styleClass="text-header" text="Algorithms:"/>
+            <Label fx:id="textAlgorithms" styleClass="text-body" wrapText="true"/>
         </VBox>
     </center>
 

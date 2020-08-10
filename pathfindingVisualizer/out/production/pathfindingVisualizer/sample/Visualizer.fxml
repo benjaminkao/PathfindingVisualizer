@@ -20,6 +20,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.control.TableView?>
 <BorderPane id="root" fx:id="root" maxHeight="800" prefHeight="800" prefWidth="800" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
 <!--    Sets margin for BorderPane-->
 <!--    Elements in left side of BorderPane-->
@@ -51,7 +52,7 @@
             <Button fx:id="setWallBtn" onAction="#changeNodeType" styleClass="node-selector" text="Wall" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.vgrow="always" />
             <Button fx:id="setWeightedBtn" onAction="#changeNodeType" styleClass="node-selector" text="Weighted" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.vgrow="always" />
             <Label id="set-type-label" fx:id="setTypeLabel" text=" Selecting Start Node" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.vgrow="always" />
-            <CheckBox fx:id="diagonalCheckBox" onAction="#checkboxTransition" text="Allow Diagonal" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.vgrow="always" />
+            <CheckBox fx:id="diagonalCheckBox" text="Allow Diagonal" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.vgrow="always" />
             <Button id="start-visualizer-btn" fx:id="startVisualizerBtn" onAction="#startVisualizer" text="Start Visualizer" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="BOTTOM" GridPane.vgrow="always" />
          <columnConstraints>
             <ColumnConstraints />

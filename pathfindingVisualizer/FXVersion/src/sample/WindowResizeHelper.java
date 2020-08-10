@@ -113,7 +113,7 @@ public class WindowResizeHelper {
                             {   //Check that resize event isn't making window too small, or mouse isn't going past
                                 // screen bounds
 
-                                stage.setHeight ( stage.getY () - mouseEvent.getScreenY () + stage.getHeight () );
+                                stage.setHeight ( -mouseEventY + stage.getHeight () );
 
                                 stage.setY(mouseEvent.getScreenY());
 
@@ -135,7 +135,7 @@ public class WindowResizeHelper {
 
                             if(stage.getWidth() > stage.getMinWidth() || mouseEventX < 0)
                             {   //Check that resize event isn't making window too small
-                                stage.setWidth(stage.getX () - mouseEvent.getScreenX () + stage.getWidth());
+                                stage.setWidth(- mouseEventX + stage.getWidth());
                                 stage.setX(mouseEvent.getScreenX());
                             }
                         } else
