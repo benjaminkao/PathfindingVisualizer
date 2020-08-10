@@ -18,6 +18,8 @@
 <?import javafx.scene.shape.SVGPath?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
 <BorderPane id="root" fx:id="root" maxHeight="800" prefHeight="800" prefWidth="800" stylesheets="@style.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
 <!--    Sets margin for BorderPane-->
 <!--    Elements in left side of BorderPane-->
@@ -69,7 +71,17 @@
     </center>
 
     <top>
-        <AnchorPane id="menu-all" fx:id="menuAll" prefWidth="800" BorderPane.alignment="TOP_LEFT" onMousePressed="#getWindowLocation" onMouseDragged="#moveWindow">
+        <AnchorPane styleClass="menu-all" fx:id="menuAll" prefWidth="800" BorderPane.alignment="TOP_LEFT" onMousePressed="#getWindowLocation" onMouseDragged="#moveWindow">
+            <MenuBar prefWidth="200" AnchorPane.leftAnchor="25">
+                <Menu text="File">
+                    <MenuItem text="Settings" onAction="#openSettings"/>
+                    <MenuItem text="Quit Visualizer" onAction="#shutdown"/>
+                </Menu>
+            </MenuBar>
+            <ImageView fx:id="appIcon"
+                       fitWidth="18" fitHeight="18" AnchorPane.leftAnchor="8" AnchorPane.topAnchor="8">
+                <Image url="@AppIcon.png"/>
+            </ImageView>
             <Button id="menu-minimize" maxWidth="40" onMouseClicked="#minimize" prefWidth="40" styleClass="menu-button" AnchorPane.rightAnchor="80">
                 <graphic>
                     <Line id="menu-minimize-icon" endX="20" endY="12.5" startX="10" startY="12.5" stroke="WHITE" strokeWidth=".5"/>

@@ -112,8 +112,11 @@ public class WindowResizeHelper {
                             if(stage.getHeight () > stage.getMinHeight () || mouseEventY < 0)
                             {   //Check that resize event isn't making window too small, or mouse isn't going past
                                 // screen bounds
-                                setStageHeight ( stage.getY () - mouseEvent.getScreenY() + stage.getHeight() );
+
+                                stage.setHeight ( stage.getY () - mouseEvent.getScreenY () + stage.getHeight () );
+
                                 stage.setY(mouseEvent.getScreenY());
+
                             }
                         } else
                         {   //If resize event is occuring on south edges, no need to move location of screen to
@@ -132,7 +135,7 @@ public class WindowResizeHelper {
 
                             if(stage.getWidth() > stage.getMinWidth() || mouseEventX < 0)
                             {   //Check that resize event isn't making window too small
-                                setStageWidth(stage.getX() - mouseEvent.getScreenX () + stage.getWidth());
+                                stage.setWidth(stage.getX () - mouseEvent.getScreenX () + stage.getWidth());
                                 stage.setX(mouseEvent.getScreenX());
                             }
                         } else

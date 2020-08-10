@@ -6,17 +6,25 @@ import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.shape.SVGPath;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.*;
 import java.util.List;
 import java.util.Timer;
@@ -106,6 +114,7 @@ public class Controller {
         setWeightedBtn.setDisable(true);
         setTypeLabel.setWrapText(true);
         initializeGrid();
+        gridChildren = grid.getChildren();
     }
 
 
@@ -183,6 +192,7 @@ public class Controller {
                         //Set node to new start and replace startCoord with new coordinates
                         node.setType ( currentNodeType );
                         startCoord.setLocation ( col, row );
+                        System.out.println ("added start");
                     }
                     //If end node already placed and about to place another end node, move end node
                     else if ( placedEnd && currentNodeType == GridNode.END )
@@ -286,41 +296,6 @@ public class Controller {
     {
         this.stage = stage;
         WindowResizeHelper.addResizeListener ( stage );
-        try
-        {
-            System.out.println ( "RECEIVED STAGE" );
-            System.out.println ( "Stage Height: " + this.stage.getHeight () );
-            System.out.println ( "Stage Width: " + this.stage.getWidth () );
-
-            //Store stage dimensions for later use when resizing window
-            stageWidth = (int) stage.getWidth ();
-            stageHeight = (int) stage.getHeight();
-
-        } catch (Exception exception)
-        {
-            System.out.println ( "SENDSTAGE() ERROR" );
-        }
-
-        //Create a window size listener
-        ChangeListener<Number> stageWidthListener = (( observableValue, oldValue, newValue ) -> {
-            //Check if there is enough space for another column of nodes
-            if(stage.getWidth() - stageWidth > MainFX.NODEWIDTH + 30) {
-                System.out.println ("Width: " + stage.getWidth());
-                System.out.println ("Should add another column of nodes");
-
-                grid = new GridPane();
-                gridChildren = grid.getChildren();
-            }
-
-        });
-
-        ChangeListener<Number> stageHeightListener = (( observableValue, oldValue, newValue ) -> {
-            System.out.println ("Height: " + stage.getHeight ());
-
-        });
-
-//        stage.widthProperty ().addListener(stageWidthListener);
-//        stage.heightProperty ().addListener ( stageHeightListener );
     }
 
     @FXML
@@ -370,6 +345,8 @@ public class Controller {
         if(algorithm.equals("Depth First Search (DFS)") || algorithm.equals("Breadth First Search (BFS)"))
         {
             setWeightedBtn.setDisable ( true );
+        } else {
+            setWeightedBtn.setDisable(false);
         }
 
         //Disable button that was clicked
@@ -710,6 +687,7 @@ public class Controller {
                 else
                 {
                     tmp.setType ( GridNode.ENDCHECKING );
+                    minHeap.clear();
                 }
 
             int newDistanceFromStart = node.getDistanceFromStart();
@@ -859,13 +837,63 @@ public class Controller {
          showShortestPath(endNode.getPrevious());
     }
 
+
     /**
      * This function is used so that when the user closes the window and the algorithm is still running, algorithm is
      * stopped.
      */
     public void shutdown ()
     {
+        stage.close();
         Platform.exit();
+    }
+
+
+    @FXML
+    protected void openSettings (ActionEvent actionEvent) throws Exception
+    {
+        System.out.println ("Open settings window");
+        FXMLLoader loader = new FXMLLoader (getClass ().getResource("Settings.fxml"));
+        Parent root = loader.load();
+        SettingsController settingsController = loader.getController ();
+        Scene sceneSettings = new Scene(root, MainFX.SETTINGSWIDTH, MainFX.SETTINGSHEIGHT);
+        Stage stageSettings = new Stage();
+        stageSettings.initStyle ( StageStyle.UNDECORATED );
+        stageSettings.setScene(sceneSettings);
+        stageSettings.setTitle("Settings");
+        stageSettings.getIcons ().add(new Image (getClass().getResourceAsStream ( "AppIcon.png" )));
+        settingsController.sendStage(stageSettings);
+        stageSettings.setOnCloseRequest (e -> {
+            settingsController.shutdown ();
+        });
+
+        //Get current stage's position so that if application is on another window, new stage will be too
+        double currentScreenX = stage.getX();
+        double currentScreenY = stage.getY();
+
+        //Iterate through all screens
+        for(Screen screen : Screen.getScreens ()) {
+            Rectangle2D screenBounds = screen.getBounds();
+
+            //Cache dimensions of screen
+            double minX = screenBounds.getMinX ();
+            double minY = screenBounds.getMinY ();
+            double maxX = screenBounds.getMaxX ();
+            double maxY = screenBounds.getMaxY ();
+
+
+            if(minX < currentScreenX && maxX > currentScreenX
+                    && minY < currentScreenY && maxY > currentScreenY)
+            {       //Current iterated screen is current screen with Visualizer stage
+
+                //Set location of stageSettings to middle of current iterated screen
+                stageSettings.setX(minX + ((maxX - minX) / 2) - (MainFX.SETTINGSWIDTH / 2));
+                stageSettings.setY(minY + ((maxY - minY) / 2) - (MainFX.SETTINGSHEIGHT / 2));
+            }
+
+        }
+
+        stageSettings.show();
     }
 
 
@@ -874,8 +902,6 @@ public class Controller {
 
         offsetX = stage.getX () - mouseEvent.getScreenX();
         offsetY = stage.getY() - mouseEvent.getScreenY();
-        System.out.println (offsetX);
-        System.out.println (offsetY);
     }
 
     @FXML
@@ -914,7 +940,6 @@ public class Controller {
 
     @FXML
     protected void close( MouseEvent mouseEvent) {
-        System.out.println ("Should close program");
         stage.close();
         Platform.exit();
     }

@@ -1,15 +1,29 @@
+/* START OF General CSS */
+
 #root {
     -fx-background-color: #323841;
     -fx-font-family: "Trebuchet MS", Helvetica, sans-serif;
     -fx-font-size: 12;
 }
 
-#menu-all {
-    -fx-pref-height: 26;
-    -fx-border-width: 0 0 .25 0;
-    -fx-border-color: white;
+.text-header {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 10 0;
 }
 
+.text-body {
+    -fx-padding: 0 0 40 0;
+}
+
+.label {
+    -fx-text-fill: #ffffff;
+}
+
+/* END OF General CSS */
+
+
+/* START OF Visualizer.fxml Specific CSS */
 .choice-box {
     -fx-pref-height: 35;
     -fx-pref-width: 200;
@@ -56,10 +70,6 @@
     -fx-pref-height: 0.5;
     -fx-border-style: solid;
     -fx-border-width: 1;
-}
-
-.label {
-    -fx-text-fill: #ffffff;
 }
 
 .grid-node {
@@ -145,8 +155,71 @@
     -fx-opacity: 100;
 }
 
+/* END OF Visualizer.fxml Specific CSS */
+
+
+/* START OF Settings.fxml Specific CSS */
+
+.settings-vbox {
+    -fx-background-color: #323841;
+}
+
+
+.settings-btn {
+    -fx-alignment: center-left;
+    -fx-background-color: #222831;
+    -fx-border-width: 0 0 0.5 0;
+}
+
+.settings-btn:hover {
+    -fx-background-color: #323841;
+}
+
+
+#settings-navigation {
+    -fx-background-color: #222831;
+    -fx-border-width: 0 0.5 0 0;
+    -fx-border-color: #ffffff;
+}
+
+/* END OF Settings.fxml Specific CSS */
+
+
+/*START OF General Menu Bar CSS*/
+
+.menu-all {
+    -fx-pref-height: 35;
+    -fx-background-color: #323841;
+    -fx-border-width: 0 0 .25 0;
+    -fx-border-color: white;
+}
+
+.menu-bar {
+    -fx-background-color: #323841;
+}
+
+.menu:focused, .menu:pressed, .menu:showing {
+    -fx-background-color: #4d90fe;
+
+}
+
+.context-menu {
+    -fx-background-color: #323841;
+    -fx-padding: 0;
+}
+
+.menu-item {
+    -fx-pref-width: 100;
+    -fx-background-color: #323841;
+    -fx-padding: 10;
+}
+
+.menu-item:hover {
+    -fx-background-color: #4d90fe;
+}
+
 .menu-button {
-    -fx-pref-height: 24;
+    -fx-pref-height: 33;
     -fx-background-radius: 0;
     -fx-background-color: #323841;
     -fx-border-width: 0;
@@ -167,3 +240,5 @@
 #menu-close:hover {
     -fx-background-color: #ff0000;
 }
+
+/* END OF General Menu Bar CSS */

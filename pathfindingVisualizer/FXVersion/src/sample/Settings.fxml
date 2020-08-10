@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.shape.SVGPath?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="sample.SettingsController" stylesheets="@style.css"
+            prefHeight="600.0" prefWidth="500.0" id="root">
+
+    <left>
+        <VBox id="settings-navigation" prefWidth="100">
+            <BorderPane.margin>
+                <Insets right="10"/>
+            </BorderPane.margin>
+            <Button text="Controls" onAction="#showControls" styleClass="settings-btn" prefWidth="100"/>
+        </VBox>
+    </left>
+
+
+    <center>
+        <VBox fx:id="menuControls" id="menu-controls" styleClass="settings-vbox"
+              visible="false">
+            <BorderPane.margin>
+                <Insets top="10" right="10"/>
+            </BorderPane.margin>
+            <Label styleClass="text-header" text="Controls:"/>
+            <Label fx:id="textControls" styleClass="text-body" wrapText="true"/>
+            <Label styleClass="text-header" text="Restraints:"/>
+            <Label fx:id="textRestraints" styleClass="text-body" wrapText="true"/>
+        </VBox>
+    </center>
+
+
+    <top>
+        <AnchorPane styleClass="menu-all" fx:id="menuAll" prefWidth="800" BorderPane.alignment="TOP_LEFT" onMousePressed="#getWindowLocation" onMouseDragged="#moveWindow">
+            <ImageView fx:id="appIcon"
+                       fitWidth="18" fitHeight="18" AnchorPane.leftAnchor="8" AnchorPane.topAnchor="8">
+                <Image url="@AppIcon.png"/>
+            </ImageView>
+            <Label text="Settings" styleClass="title" AnchorPane.leftAnchor="40" AnchorPane.topAnchor="8"/>
+            <Button id="menu-maximize" maxWidth="40" onMouseClicked="#maximize" prefWidth="40" styleClass="menu-button" AnchorPane.rightAnchor="40">
+                <graphic>
+                    <SVGPath fx:id="menuMaximizeIcon" id="menu-maximize-icon" content="M 5 5 L 5 15 L 15 15 L 15 5 Z" fill="TRANSPARENT" stroke="WHITE" strokeWidth=".5"/>
+                </graphic>
+            </Button>
+            <Button id="menu-close" maxWidth="40" onMouseClicked="#close" prefWidth="40" styleClass="menu-button" AnchorPane.rightAnchor="0">
+                <graphic>
+                    <SVGPath id="menu-close-icon" content="M 5 5 L 15 15 M 15 5 L 5 15 Z" fill="#323841" stroke="WHITE" strokeWidth=".5"/>
+                </graphic>
+            </Button>
+        </AnchorPane>
+    </top>
+
+
+</BorderPane>
