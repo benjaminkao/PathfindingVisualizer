@@ -2,23 +2,17 @@
 Pathfinding Visualizer shows pathfinding algorithms such as Dijkstra's, A*, and Depth First Search (DFS).
 
 
-## Three Versions:
-1. JavaFX Version:
-   Implemented using JavaFX
-   
-   - Uses JavaFX library
-   
-   
-2. Improved Java Grid Version:
-   Implemented grid using JTable
-   Changed UI
-   
-   - Uses the Java Swing library
-   - Used IntelliJ GUI Designer to aid in visual element layout
-  
-  
-3. JButton Version (Can be found within regular Java version):
-   Implemented grid using many JButtons
+## Motivation
+I wanted to prove that I understood the concepts of these pathfinding algorithms well enough to be able to code them. I also thought this project was a good opportunity to work on improving my UI creation skills.
+
+
+## Screenshots
+
+
+
+## Framework Used
+#### Built with
+   - JavaFX
 
 
 ## Latest Update:
