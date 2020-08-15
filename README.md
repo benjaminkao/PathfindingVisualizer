@@ -7,7 +7,7 @@ I wanted to prove that I understood the concepts of these pathfinding algorithms
 
 
 ## Screenshots
-
+![PathfindingVisualizerScreenshot](https://user-images.githubusercontent.com/54568364/90321568-d92f3d80-deff-11ea-9f9c-00182248e4b5.PNG)
 
 
 ## Framework Used
