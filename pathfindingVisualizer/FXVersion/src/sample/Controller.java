@@ -114,6 +114,7 @@ public class Controller {
         setStartBtn.setDisable ( true );
         setWeightedBtn.setDisable(true);
         setTypeLabel.setWrapText(true);
+        startVisualizerBtn.setDisable(true);
         initializeGrid();
         gridChildren = grid.getChildren ();
     }
@@ -222,6 +223,12 @@ public class Controller {
 
                             //Store coordinates into start node point
                             startCoord.setLocation ( col, row );
+
+                            //Check if both start and end nodes are placed
+                            if(placedStart && placedEnd)
+                            {
+                                startVisualizerBtn.setDisable(false);
+                            }
                         }
                         if ( currentNodeType == GridNode.END )
                         {
@@ -233,6 +240,12 @@ public class Controller {
 
                             //Store coordinates into end node point
                             endCoord.setLocation ( col, row );
+
+                            //Check if both start and end nodes are placed
+                            if(placedStart && placedEnd)
+                            {
+                                startVisualizerBtn.setDisable(false);
+                            }
                         }
                     }
                 }
@@ -243,8 +256,10 @@ public class Controller {
                 }
                 if(node.getType() == GridNode.START) {
                     placedStart = false;
+                    startVisualizerBtn.setDisable(true);
                 } else if(node.getType() == GridNode.END) {
                     placedEnd = false;
+                    startVisualizerBtn.setDisable(true);
                 }
                 node.setType(GridNode.NORMAL);
             }
@@ -279,8 +294,10 @@ public class Controller {
 
                 if(node.getType() == GridNode.START) {
                     placedStart = false;
+                    startVisualizerBtn.setDisable ( true );
                 } else if(node.getType() == GridNode.END) {
                     placedEnd = false;
+                    startVisualizerBtn.setDisable(true);
                 }
                 node.setType(GridNode.NORMAL);
             }
