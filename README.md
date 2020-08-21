@@ -17,14 +17,20 @@ I wanted to prove that I understood the concepts of these pathfinding algorithms
 ## Latest Update:
 
 
+### August 20th, 2020
+Fixed some bug issues
+- Fixed issue where user could start algorithm without placing both start and end nodes
+
+
+## Previous Updates:
+
+
 ### August 10th, 2020
 Added Algorithm Descriptions; Minor Updates
 
 - Added an algorithm descriptions tabe to Settings
 - Disabled all buttons and grid visualizer after visualizer is started so that the start and end nodes can not be moved during the pathfinding anymore
 
-
-## Previous Updates:
 
 
 ### August 9th, 2020
